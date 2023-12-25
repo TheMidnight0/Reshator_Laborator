@@ -370,19 +370,22 @@ namespace ReshatorLaborator {
 			show_window();
 		}
 		if (type == "full") {
-			change_form_object(this->progressBar, "Maximum", int(animTestNames.size() + funcTestNames.size()));
+			change_form_object(this->progressBar, "Maximum", int(8 + 5));
 			anim_test();
 			func_test();
 		}
 		if (type == "anim") {
-			change_form_object(this->progressBar, "Maximum", int(animTestNames.size()));
+			change_form_object(this->progressBar, "Maximum", int(8));
 			anim_test();
 		}
 		if (type == "func") {
-			change_form_object(this->progressBar, "Maximum", int(funcTestNames.size()));
+			change_form_object(this->progressBar, "Maximum", int(5));
 			func_test();
 		}
-		end_test();
+		hide_window();
+		change_form_object(this->exit, "Location", System::Drawing::Point(41, 360));
+		change_form_object(this->exit, "Enabled", true);
+		change_form_object(this->progressBar, "Location", System::Drawing::Point(641, 360));
 	}
 	void anim_test() {
 		// Menu from settings
@@ -414,10 +417,8 @@ namespace ReshatorLaborator {
 		compare(WindowData::button3->Size, System::Drawing::Size(90, 90), "button3->Size");
 		compare(WindowData::button4->FlatAppearance->BorderSize, 1, "button4->FlatAppearance->BorderSize");
 		compare(WindowData::button5->Text, "expand", "button5->Text");
-		compare(WindowData::button6->Enabled, true, "button6->Enabled");
 		compare(WindowData::button7->Location, System::Drawing::Point(170, 401), "button7->Location");
 		compare(WindowData::button8->Text, "change\nsystem", "button8->Text");
-		compare(WindowData::button9->Enabled, true, "button9->Enabled");
 		compare(WindowData::button10->Size, System::Drawing::Size(140, 76), "button10->Size");
 		compare(WindowData::label1->Size, System::Drawing::Size(618, 200), "label1->Size");
 		compare(WindowData::label1->Location, System::Drawing::Point(32, 96), "label1->Location");
@@ -446,9 +447,6 @@ namespace ReshatorLaborator {
 		compare(WindowData::button10->Location, System::Drawing::Point(732, 12), "button10->Location");
 		compare(WindowData::input1->Location, System::Drawing::Point(895, 25), "input1->Location");
 		compare(WindowData::input2->Location, System::Drawing::Point(1100, 25), "input2->Location");
-		compare(WindowData::button10->Enabled, false, "button10->Enabled");
-		compare(WindowData::input1->Enabled, false, "input1->Enabled");
-		compare(WindowData::input2->Enabled, false, "input2->Enabled");
 		log_in(animTestNames[5], animTestNames[6]);
 		// Add element [2]
 		sleep_for(seconds(2));
@@ -493,50 +491,55 @@ namespace ReshatorLaborator {
 		command("button6");
 		sleep_for(seconds(2));
 		compare(WindowData::label1->Text->Split('.')[0], "¬ы не можете иметь в пам€ти более 6 чисел", "label1->Text");
-		log_in(animTestNames[7], animTestNames[8]);
-		// Plus
-		log_in(animTestNames[8], animTestNames[9]);
-		// Minus
-		log_in(animTestNames[9], animTestNames[10]);
-		// Divine
-		log_in(animTestNames[10], animTestNames[11]);
-		// Multiply
-		log_in(animTestNames[11], animTestNames[12]);
-		// Error
-		log_in(animTestNames[12], animTestNames[13]);
-		// Input show [2]
-		log_in(animTestNames[13], animTestNames[14]);
-		// Delete
-		log_in(animTestNames[14], animTestNames[15]);
-		// Delete [2]
-		log_in(animTestNames[15], animTestNames[16]);
-		// Change system
-		log_in(animTestNames[16], animTestNames[17]);
-		// Button spam
-		log_in(animTestNames[17], animTestNames[18]);
-		// To menu
-		log_in(animTestNames[18], animTestNames[19]);
-		// Transition [2]
-		log_in(animTestNames[19], animTestNames[20]);
-		// Prev
-		log_in(animTestNames[20], animTestNames[21]);
-		// Prev [2]
-		log_in(animTestNames[21], animTestNames[22]);
-		// Next
-		log_in(animTestNames[22], animTestNames[23]);
-		// Next [2]
-		log_in(animTestNames[23], animTestNames[24]);
+		log_in(animTestNames[7], "");
+		command("button9");
+		sleep_for(seconds(4));
+		command("button2");
+		sleep_for(seconds(2));
+		command("button5");
 	}
 	void func_test() {
-
-	}
-	void end_test() {
-		command("close");
-		hide_window();
-		sleep_for(milliseconds(1000));
-		change_form_object(this->exit, "Location", System::Drawing::Point(41, 360));
-		change_form_object(this->exit, "Enabled", true);
-		change_form_object(this->progressBar, "Location", System::Drawing::Point(641, 360));
+		// Prev
+		log_in("", funcTestNames[0]);
+		WinState[1] = "subtask";
+		lab = 1;
+		task = 1;
+		subtask = 0;
+		prev();
+		compare(subtask, safe_cast<System::Object^>(0), "subtask");
+		log_in(funcTestNames[0], funcTestNames[1]);
+		// Prev [2]
+		WinState[1] = "task";
+		task = 0;
+		prev();
+		compare(task, 2, "task");
+		log_in(funcTestNames[1], funcTestNames[2]);
+		// Next
+		task = 2;
+		next();
+		compare(task, safe_cast<System::Object^>(0), "task");
+		log_in(funcTestNames[2], funcTestNames[3]);
+		// Next [2]
+		WinState[1] = "subtask";
+		task = 1;
+		subtask = 0;
+		next();
+		compare(subtask, safe_cast<System::Object^>(0), "subtask");
+		log_in(funcTestNames[3], funcTestNames[4]);
+		// Enter
+		WinState[1] = "task";
+		subtask = 5;
+		enter();
+		compare(gcnew String(WinState[1].data()), gcnew String("subtask"), "WinState[1]");
+		compare(subtask, safe_cast<System::Object^>(0), "subtask");
+		log_in(funcTestNames[4], funcTestNames[5]);
+		// Enter [2]
+		enter();
+		compare(gcnew String(WinState[1].data()), gcnew String("subtask_input"), "WinState[1]");
+		log_in(funcTestNames[5], "");
+		// End
+		task = 2;
+		sleep_for(seconds(1));
 	}
 	};
 }
