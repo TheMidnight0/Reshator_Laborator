@@ -774,18 +774,6 @@ namespace ReshatorLaborator {
 			}
 		}
 		if (WinState[0] == "lab_1") {
-			if (e->KeyCode == Keys::Oemplus) {
-				button1_Click(button1, nullptr);
-			}
-			if (e->KeyCode == Keys::OemMinus) {
-				button2_Click(button2, nullptr);
-			}
-			if (e->KeyCode == Keys::Multiply) {
-				button3_Click(button3, nullptr);
-			}
-			if (e->KeyCode == Keys::Divide) {
-				button4_Click(button4, nullptr);
-			}
 			if (e->KeyCode == Keys::Delete) {
 				button7_Click(button7, nullptr);
 			}

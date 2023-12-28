@@ -7,7 +7,7 @@
 using namespace std::this_thread;
 using namespace std::chrono;
 const std::vector<std::string> animTestNames = { "Menu from settings", "Lab choice", "Transition", "Input show", "Add element",
-"Input hide", "Add element [2]", "Add element [3]", "Plus", "Minus", "Divine", "Multiply", "Error", "Input show [2]", "Delete", "Delete [2]", 
+"Input hide", "Add element [2]", "Add element [3]", "Error", "Input show [2]", "Delete", "Delete [2]", 
 "Change system", "Button spam", "To menu", "Transition [2]", "Prev", "Prev [2]", "Next", "Next [2]", "Enter", "Back", "Next [3]", "Prev [3]", 
 "Lab input", "Lab resolve", "To menu [2]", "Enter [2]", "Back [2]", "Lab input [2]", "To menu [3]", "Lab input [3]", "Answer" };
 const std::vector<std::string> funcTestNames = { "Prev", "Prev [2]", "Next", "Next [2]", "Enter", "Enter [2]", "Back", "Erase", "Lab 1 get vars", 
@@ -63,7 +63,8 @@ namespace ReshatorLaborator {
 	private: System::Windows::Forms::Label^ label;
 	private: System::Windows::Forms::ListBox^ listBox;
 	private: System::Windows::Forms::ProgressBar^ progressBar;
-	private: System::Windows::Forms::HelpProvider^ helpProvider1;
+
+	private: System::Windows::Forms::Label^ percentage;
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
@@ -86,7 +87,7 @@ namespace ReshatorLaborator {
 			this->exit = (gcnew System::Windows::Forms::Button());
 			this->listBox = (gcnew System::Windows::Forms::ListBox());
 			this->progressBar = (gcnew System::Windows::Forms::ProgressBar());
-			this->helpProvider1 = (gcnew System::Windows::Forms::HelpProvider());
+			this->percentage = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// fullTest
@@ -160,14 +161,13 @@ namespace ReshatorLaborator {
 			// 
 			// label
 			// 
-			this->label->AutoSize = true;
-			this->label->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->label->Location = System::Drawing::Point(100, 9);
+			this->label->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 20));
+			this->label->Location = System::Drawing::Point(12, 8);
 			this->label->Name = L"label";
-			this->label->Size = System::Drawing::Size(405, 56);
+			this->label->Size = System::Drawing::Size(558, 50);
 			this->label->TabIndex = 4;
-			this->label->Text = L"Вас приветствует мастер проверки RLS!\r\nВыберите вид тестирования программы.";
+			this->label->Text = L"Полный тест программы\r\n";
+			this->label->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// exit
 			// 
@@ -180,7 +180,7 @@ namespace ReshatorLaborator {
 			this->exit->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->exit->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->exit->Location = System::Drawing::Point(41, 360);
+			this->exit->Location = System::Drawing::Point(552, -52);
 			this->exit->Name = L"exit";
 			this->exit->Size = System::Drawing::Size(500, 75);
 			this->exit->TabIndex = 3;
@@ -192,7 +192,7 @@ namespace ReshatorLaborator {
 			// 
 			this->listBox->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(0)),
 				static_cast<System::Int32>(static_cast<System::Byte>(60)));
-			this->listBox->ForeColor = System::Drawing::Color::Lime;
+			this->listBox->ForeColor = System::Drawing::Color::White;
 			this->listBox->FormattingEnabled = true;
 			this->listBox->ItemHeight = 28;
 			this->listBox->Location = System::Drawing::Point(12, 86);
@@ -204,18 +204,29 @@ namespace ReshatorLaborator {
 			// progressBar
 			// 
 			this->progressBar->BackColor = System::Drawing::SystemColors::ControlText;
-			this->progressBar->Location = System::Drawing::Point(41, 360);
+			this->progressBar->Location = System::Drawing::Point(41, 388);
 			this->progressBar->Name = L"progressBar";
-			this->progressBar->Size = System::Drawing::Size(500, 75);
+			this->progressBar->Size = System::Drawing::Size(500, 30);
 			this->progressBar->Step = 50;
 			this->progressBar->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
 			this->progressBar->TabIndex = 0;
+			// 
+			// percentage
+			// 
+			this->percentage->Location = System::Drawing::Point(41, 356);
+			this->percentage->Name = L"percentage";
+			this->percentage->Size = System::Drawing::Size(500, 25);
+			this->percentage->TabIndex = 6;
+			this->percentage->Text = L"50%";
+			this->percentage->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// Tester
 			// 
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::None;
 			this->BackColor = System::Drawing::SystemColors::ControlText;
 			this->ClientSize = System::Drawing::Size(582, 453);
+			this->ControlBox = false;
+			this->Controls->Add(this->percentage);
 			this->Controls->Add(this->progressBar);
 			this->Controls->Add(this->listBox);
 			this->Controls->Add(this->exit);
@@ -254,12 +265,15 @@ namespace ReshatorLaborator {
 		this->exit->Enabled = true;
 		this->showForm->Location = System::Drawing::Point(128, 320);
 		this->showForm->Size = System::Drawing::Size(338, 32);
-		this->progressBar->Location = System::Drawing::Point(641, 360);
-		this->progressBar->Size = System::Drawing::Size(500, 50);
+		this->progressBar->Location = System::Drawing::Point(641, 388);
+		this->progressBar->Size = System::Drawing::Size(500, 30);
 		this->progressBar->Value = this->progressBar->Minimum;
 		this->progressBar->Step = 1;
-		this->label->Location = System::Drawing::Point(87, 8);
-		this->label->Size = System::Drawing::Size(405, 56);
+		this->percentage->Location = System::Drawing::Point(641, 356);
+		this->percentage->Text = L"0%";
+		this->label->Location = System::Drawing::Point(12, 8);
+		this->label->Size = System::Drawing::Size(558, 75);
+		this->label->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 12));
 		this->label->Text = L"Вас приветствует мастер проверки RLS!\r\nВыберите вид тестирования программы.";
 		this->listBox->Location = System::Drawing::Point(612, 86);
 		this->listBox->ForeColor = System::Drawing::Color::FromArgb(255, 255, 255);
@@ -302,6 +316,8 @@ namespace ReshatorLaborator {
 		if (current != "") {
 			add_item(this->listBox, this->listBox->Items->Count - 1, gcnew String((current + ": " + (errorList[errorList->Count - 1] == "" ? "OK" : "BAD")).data()));
 			this->progressBar->Invoke(gcnew Action(this->progressBar, &ProgressBar::PerformStep));
+			auto percentage = int(double(this->progressBar->Value) / this->progressBar->Maximum * 100);
+			change_form_object(this->percentage, "Text", percentage + "%");
 			if (errorList[errorList->Count - 1] != "") {
 				if (this->listBox->BackColor.B != 0) {
 					change_form_object(this->listBox, "BackColor", System::Drawing::Color::FromArgb(this->listBox->BackColor.R + 10 > 60 ? 60 : this->listBox->BackColor.R + 10, 0, this->listBox->BackColor.B - 10 < 0 ? 0 : this->listBox->BackColor.B - 10));
@@ -364,28 +380,31 @@ namespace ReshatorLaborator {
 		change_form_object(this->funcTest, "Location", System::Drawing::Point(641, 239));
 		change_form_object(this->exit, "Location", System::Drawing::Point(641, 360));
 		change_form_object(this->showForm, "Location", System::Drawing::Point(728, 320));
-		change_form_object(this->progressBar, "Location", System::Drawing::Point(41, 360));
+		change_form_object(this->progressBar, "Location", System::Drawing::Point(41, 388));
+		change_form_object(this->percentage, "Location", System::Drawing::Point(41, 356));
 		change_form_object(this->listBox, "Location", System::Drawing::Point(12, 86));
+		change_form_object(this->label, "Text", L"Пожалуйста, дождитесь завершения теста.\nПринудительный выход приведет за собой сбой программы.");
 		if (this->showForm->Checked) {
 			show_window();
 		}
 		if (type == "full") {
-			change_form_object(this->progressBar, "Maximum", int(8 + 5));
+			change_form_object(this->progressBar, "Maximum", int(9 + 6));
 			anim_test();
 			func_test();
 		}
 		if (type == "anim") {
-			change_form_object(this->progressBar, "Maximum", int(8));
+			change_form_object(this->progressBar, "Maximum", int(9));
 			anim_test();
 		}
 		if (type == "func") {
-			change_form_object(this->progressBar, "Maximum", int(5));
+			change_form_object(this->progressBar, "Maximum", int(6));
 			func_test();
 		}
 		hide_window();
 		change_form_object(this->exit, "Location", System::Drawing::Point(41, 360));
 		change_form_object(this->exit, "Enabled", true);
 		change_form_object(this->progressBar, "Location", System::Drawing::Point(641, 360));
+		change_form_object(this->percentage, "Location", System::Drawing::Point(641, 356));
 	}
 	void anim_test() {
 		// Menu from settings
@@ -455,7 +474,7 @@ namespace ReshatorLaborator {
 		// Add element [3]
 		command("button6");
 		sleep_for(milliseconds(500));
-		command("input1", "101");
+		command("input1", "1010");
 		command("input2", "2");
 		sleep_for(milliseconds(500));
 		command("button10");
@@ -469,29 +488,48 @@ namespace ReshatorLaborator {
 		sleep_for(milliseconds(500));
 		command("button6");
 		sleep_for(milliseconds(500));
-		command("input1", "17");
-		command("input2", "8");
+		command("input1", "13");
+		command("input2", "10");
 		sleep_for(milliseconds(500));
 		command("button10");
 		sleep_for(milliseconds(500));
 		command("button6");
 		sleep_for(milliseconds(500));
-		command("input1", "17");
-		command("input2", "8");
+		command("input1", "-6,9");
+		command("input2", "10");
 		sleep_for(milliseconds(500));
 		command("button10");
 		sleep_for(milliseconds(500));
 		command("button6");
 		sleep_for(milliseconds(500));
-		command("input1", "17");
+		command("input1", "-6.5");
 		command("input2", "8");
 		sleep_for(milliseconds(500));
 		command("button10");
 		sleep_for(milliseconds(500));
 		command("button6");
 		sleep_for(seconds(2));
-		compare(WindowData::label1->Text->Split('.')[0], "Вы не можете иметь в памяти более 6 чисел", "label1->Text");
-		log_in(animTestNames[7], "");
+		compare(WindowData::label1->Text->Split(':')[0], "Вы не можете иметь в памяти более 6 чисел.\nПопробуйте выбрать другое действие.\nЧисла в памяти", "label1->Text");
+		log_in(animTestNames[7], animTestNames[8]);
+		// Error
+		command("button3");
+		sleep_for(milliseconds(500));
+		command("input1", "SADNAJKSUICBHDAJ");
+		command("input2", "AWKJDBANKSJDAHBC");
+		sleep_for(milliseconds(500));
+		command("button10");
+		sleep_for(seconds(2));
+		compare(WindowData::label1->Text->Split(':')[0], "Неверный формат ввода.\nПопробуйте ввести другие данные.\nЧисла в памяти", "label1->Text");
+		command("button4");
+		sleep_for(milliseconds(500));
+		command("input1", "-1");
+		command("input2", "7");
+		sleep_for(milliseconds(500));
+		command("button10");
+		sleep_for(seconds(2));
+		compare(WindowData::label1->Text->Split(':')[0], "Произошла ошибка в ходе выполнения операции.\nПопробуйте ввести другие данные.\nЧисла в памяти", "label1->Text");
+		log_in(animTestNames[8], "");
+		// End
 		command("button9");
 		sleep_for(seconds(4));
 		command("button2");
@@ -541,5 +579,5 @@ namespace ReshatorLaborator {
 		task = 2;
 		sleep_for(seconds(1));
 	}
-	};
+};
 }
